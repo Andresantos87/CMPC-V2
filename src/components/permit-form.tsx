@@ -889,18 +889,20 @@ const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
           </Accordion>
         </div>
 
-        <div className="w-full lg:w-[320px] shrink-0 lg:sticky lg:top-8">
-          <div className="border border-gray-200 rounded-xl overflow-hidden shadow-md bg-white p-2">
-            <img 
-              src="/Andaime.png" 
-              alt="Referência de Andaime" 
-              className="w-full h-auto rounded-lg object-contain"
-            />
-            <p className="text-[10px] text-gray-400 mt-2 text-center uppercase font-bold tracking-wider">
-              {isSantaFe ? 'Referencia de seguridad' : 'Referência de Segurança'}
-            </p>
+        {watch('alturaSubcategorias')?.includes('andaimes') && (
+          <div className="w-full lg:w-[320px] shrink-0 lg:sticky lg:top-8">
+            <div className="border border-gray-200 rounded-xl overflow-hidden shadow-md bg-white p-2">
+              <img 
+                src="/Andaime.png" 
+                alt="Referência de Andaime" 
+                className="w-full h-auto rounded-lg object-contain"
+              />
+              <p className="text-[10px] text-gray-400 mt-2 text-center uppercase font-bold tracking-wider">
+                {isSantaFe ? 'Referencia de seguridad' : 'Referência de Segurança'}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       
       <div className="bg-blue-50 border border-blue-100 p-4 rounded-lg flex items-start gap-3 mt-6 max-w-4xl">
