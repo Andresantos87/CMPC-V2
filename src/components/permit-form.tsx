@@ -791,100 +791,117 @@ const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
         </h2>
       </div>
 
-      <Accordion 
-        type="multiple" 
-        value={openSections} 
-        onValueChange={setOpenSections}
-        className="space-y-4"
-      >
-        {sections.map((section) => {
-          const answeredCount = section.questions.filter(q => verificacaoWatch[q.id]).length;
-          const isComplete = answeredCount === section.questions.length;
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
+        <div className="flex-1 w-full">
+          <Accordion 
+            type="multiple" 
+            value={openSections} 
+            onValueChange={setOpenSections}
+            className="space-y-4"
+          >
+            {sections.map((section) => {
+              const answeredCount = section.questions.filter(q => verificacaoWatch[q.id]).length;
+              const isComplete = answeredCount === section.questions.length;
 
-          return (
-            <AccordionItem 
-              key={section.id} 
-              value={section.id} 
-              className="border border-gray-100 rounded-lg bg-white overflow-hidden shadow-sm"
-            >
-              <AccordionTrigger className="px-6 py-4 hover:no-underline text-left">
-                <div className="flex items-center gap-4 w-full">
-                  <h3 className={cn(
-                    "text-xs font-black uppercase tracking-widest leading-none",
-                    isComplete ? "text-green-600" : "text-[#5C8D3C]"
-                  )}>
-                    {section.title}
-                  </h3>
-                  {isComplete ? (
-                    <Badge variant="outline" className="ml-auto bg-green-50 text-green-600 border-green-200 gap-1.5 h-6 px-2 rounded-full font-bold shrink-0">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                      {isSantaFe ? 'COMPLETO' : 'COMPLETO'}
-                    </Badge>
-                  ) : (
-                    <span className="ml-auto text-[10px] font-bold text-gray-400 shrink-0">
-                      {answeredCount}/{section.questions.length}
-                    </span>
-                  )}
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="px-6 pb-6 pt-2 border-t border-gray-50">
-                <div className="space-y-8 max-w-3xl mt-4">
-                  {section.questions.map((q) => (
-                    <div key={q.id} className="space-y-3">
-                      <div className="flex items-start gap-2">
-                        <span className="text-sm font-bold text-[#5C8D3C] min-w-[24px]">{q.id}</span>
-                        <div className="space-y-1">
-                          <p className="text-sm font-bold text-black uppercase leading-tight">
-                            {q.perigo}
-                          </p>
-                          <p className="text-sm font-medium text-gray-600 leading-tight text-justify">
-                            {q.text}
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="pl-8">
-                        <FormField
-                          control={control}
-                          name={`verificacaoOperador.${q.id}`}
-                          render={({ field }) => (
-                            <RadioGroup
-                              onValueChange={field.onChange}
-                              value={field.value}
-                              className="flex items-center gap-6"
-                            >
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem 
-                                  value="sim" 
-                                  id={`${q.id}-sim`} 
-                                  className="border-gray-300 text-[#5C8D3C] focus:ring-[#5C8D3C]" 
-                                />
-                                <Label htmlFor={`${q.id}-sim`} className="text-sm text-gray-600 font-medium cursor-pointer">
-                                  {isSantaFe ? 'Si' : 'Sim'}
-                                </Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem 
-                                  value="na" 
-                                  id={`${q.id}-na`} 
-                                  className="border-gray-300 text-[#5C8D3C] focus:ring-[#5C8D3C]" 
-                                />
-                                <Label htmlFor={`${q.id}-na`} className="text-sm text-gray-600 font-medium cursor-pointer">
-                                  N/A
-                                </Label>
-                              </div>
-                            </RadioGroup>
-                          )}
-                        />
-                      </div>
+              return (
+                <AccordionItem 
+                  key={section.id} 
+                  value={section.id} 
+                  className="border border-gray-100 rounded-lg bg-white overflow-hidden shadow-sm"
+                >
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline text-left">
+                    <div className="flex items-center gap-4 w-full">
+                      <h3 className={cn(
+                        "text-xs font-black uppercase tracking-widest leading-none",
+                        isComplete ? "text-green-600" : "text-[#5C8D3C]"
+                      )}>
+                        {section.title}
+                      </h3>
+                      {isComplete ? (
+                        <Badge variant="outline" className="ml-auto bg-green-50 text-green-600 border-green-200 gap-1.5 h-6 px-2 rounded-full font-bold shrink-0">
+                          <CheckCircle2 className="h-3.5 w-3.5" />
+                          {isSantaFe ? 'COMPLETO' : 'COMPLETO'}
+                        </Badge>
+                      ) : (
+                        <span className="ml-auto text-[10px] font-bold text-gray-400 shrink-0">
+                          {answeredCount}/{section.questions.length}
+                        </span>
+                      )}
                     </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          );
-        })}
-      </Accordion>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-6 pt-2 border-t border-gray-50">
+                    <div className="space-y-8 max-w-3xl mt-4">
+                      {section.questions.map((q) => (
+                        <div key={q.id} className="space-y-3">
+                          <div className="flex items-start gap-2">
+                            <span className="text-sm font-bold text-[#5C8D3C] min-w-[24px]">{q.id}</span>
+                            <div className="space-y-1">
+                              <p className="text-sm font-bold text-black uppercase leading-tight">
+                                {q.perigo}
+                              </p>
+                              <p className="text-sm font-medium text-gray-600 leading-tight text-justify">
+                                {q.text}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <div className="pl-8">
+                            <FormField
+                              control={control}
+                              name={`verificacaoOperador.${q.id}`}
+                              render={({ field }) => (
+                                <RadioGroup
+                                  onValueChange={field.onChange}
+                                  value={field.value}
+                                  className="flex items-center gap-6"
+                                >
+                                  <div className="flex items-center space-x-2">
+                                    <RadioGroupItem 
+                                      value="sim" 
+                                      id={`${q.id}-sim`} 
+                                      className="border-gray-300 text-[#5C8D3C] focus:ring-[#5C8D3C]" 
+                                    />
+                                    <Label htmlFor={`${q.id}-sim`} className="text-sm text-gray-600 font-medium cursor-pointer">
+                                      {isSantaFe ? 'Si' : 'Sim'}
+                                    </Label>
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <RadioGroupItem 
+                                      value="na" 
+                                      id={`${q.id}-na`} 
+                                      className="border-gray-300 text-[#5C8D3C] focus:ring-[#5C8D3C]" 
+                                    />
+                                    <Label htmlFor={`${q.id}-na`} className="text-sm text-gray-600 font-medium cursor-pointer">
+                                      N/A
+                                    </Label>
+                                  </div>
+                                </RadioGroup>
+                              )}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
+        </div>
+
+        <div className="w-full lg:w-[320px] shrink-0 lg:sticky lg:top-8">
+          <div className="border border-gray-200 rounded-xl overflow-hidden shadow-md bg-white p-2">
+            <img 
+              src="/Andaime.png" 
+              alt="Referência de Andaime" 
+              className="w-full h-auto rounded-lg object-contain"
+            />
+            <p className="text-[10px] text-gray-400 mt-2 text-center uppercase font-bold tracking-wider">
+              {isSantaFe ? 'Referencia de seguridad' : 'Referência de Segurança'}
+            </p>
+          </div>
+        </div>
+      </div>
       
       <div className="bg-blue-50 border border-blue-100 p-4 rounded-lg flex items-start gap-3 mt-6 max-w-4xl">
         <ShieldAlert className="h-5 w-5 text-blue-500 shrink-0 mt-0.5" />
