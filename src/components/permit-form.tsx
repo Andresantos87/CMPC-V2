@@ -1556,7 +1556,7 @@ const PermitFormContent = ({
                    <Accordion type="multiple" className="space-y-3">
                       <RoleCategoryAccordion categoryId="geral" questions={questionsMap.geral} role="EXECUTANTE" isSantaFe={isSantaFe} disabled={false} />
                       {alturaSubcategoriasWatch.map(sub => (
-                        <RoleCategoryAccordion key={sub} categoryId={sub} questions={questionsMap[sub] || []} role="EXECUTANTE" isSantaFe={isSantaFe} disabled={false} imageUrl={sub === 'andaimes' ? '/andaime.png' : undefined} />
+                        <RoleCategoryAccordion key={sub} categoryId={sub} questions={questionsMap[sub] || []} role="EXECUTANTE" isSantaFe={isSantaFe} disabled={false} imageUrl={sub === 'andaimes' ? '/Andaime.png' : undefined} />
                       ))}
                    </Accordion>
                 </div>
@@ -1565,7 +1565,7 @@ const PermitFormContent = ({
                    <Accordion type="multiple" className="space-y-3">
                       <RoleCategoryAccordion categoryId="geral" questions={questionsMap.geral} role="EMITENTE" isSantaFe={isSantaFe} disabled={true} />
                       {alturaSubcategoriasWatch.map(sub => (
-                        <RoleCategoryAccordion key={sub} categoryId={sub} questions={questionsMap[sub] || []} role="EMITENTE" isSantaFe={isSantaFe} disabled={true} imageUrl={sub === 'andaimes' ? '/andaime.png' : undefined} />
+                        <RoleCategoryAccordion key={sub} categoryId={sub} questions={questionsMap[sub] || []} role="EMITENTE" isSantaFe={isSantaFe} disabled={true} imageUrl={sub === 'andaimes' ? '/Andaime.png' : undefined} />
                       ))}
                    </Accordion>
                 </div>
