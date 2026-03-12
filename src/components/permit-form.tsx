@@ -73,7 +73,8 @@ import {
   Hand,
   Footprints,
   Shirt,
-  Sparkles
+  Sparkles,
+  Settings
 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -699,8 +700,8 @@ const EpiSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
 };
 
 const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
-  const { control, watch } = useFormContext();
-  const [openSections, setOpenSections] = React.useState<string[]>(['section-1']);
+  const { control, watch, setValue } = useFormContext();
+  const [openSections, setOpenSections] = React.useState<string[]>([]);
 
   const sections = [
     {
@@ -708,27 +709,27 @@ const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
       title: isSantaFe ? '1. ENERGÍAS, BLOQUEOS Y FLUIDOS (LOTO & PROCESO)' : '1. ENERGIAS, BLOQUEIOS E FLUIDOS (LOTO & PROCESSO)',
       questions: [
         { 
-          id: '1.1', 
+          id: '1_1', 
           perigo: isSantaFe ? 'Equipo Energizado' : 'Equipamento Energizado',
           text: isSantaFe ? '¿Fuentes de energía bloqueadas (LOTO), probadas y señalizadas?' : 'Fontes de energia bloqueadas (LOTO), testadas e sinalizadas?' 
         },
         { 
-          id: '1.2', 
+          id: '1_2', 
           perigo: isSantaFe ? 'Fluido bajo Presión / Fuga' : 'Fluido sob Pressão / Vazamento',
           text: isSantaFe ? '¿El sistema está drenado, despresurizado, raqueteado o flangeado?' : 'Sistema está drenado, despressurizado, raqueteado ou flangeado?' 
         },
         { 
-          id: '1.3', 
+          id: '1_3', 
           perigo: isSantaFe ? 'Superficie Caliente / Térmico' : 'Superfície Quente / Térmico',
           text: isSantaFe ? '¿Equipos/túbulos aislados o enfriados para evitar el contacto?' : 'Equipamentos/tubulações isolados ou resfriados para evitar contato?' 
         },
         { 
-          id: '1.4', 
+          id: '1_4', 
           perigo: isSantaFe ? 'Gases, Vapores y Nieblas' : 'Gases, Vapores e Névoas',
           text: isSantaFe ? '¿Se realizó desgasificación, inertización, purga o lavado previo?' : 'Realizada desgaseificação, inertização, expurgo ou lavagem prévia?' 
         },
         { 
-          id: '1.5', 
+          id: '1_5', 
           perigo: isSantaFe ? 'Incendio y Explosión' : 'Incêndio e Explosão',
           text: isSantaFe ? '¿Área libre de combustibles y se realizó monitoreo atmosférico?' : 'Área livre de combustíveis e monitoramento atmosférico realizado?' 
         },
@@ -739,32 +740,32 @@ const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
       title: isSantaFe ? '2. AMBIENTE DE TRABAJO Y ACCESOS (ENTORNO)' : '2. AMBIENTE DE TRABALHO E ACESSOS (ENTORNO)',
       questions: [
         {
-          id: '2.1',
+          id: '2_1',
           perigo: isSantaFe ? 'Piso Irregular / Resbaladizo' : 'Piso Irregular / Escorregadio',
           text: isSantaFe ? '¿Área limpia, organizada y libre de aceite, grasa o residuos?' : 'Área limpa, organizada e livre de óleo, graxa ou resíduos?'
         },
         {
-          id: '2.2',
+          id: '2_2',
           perigo: isSantaFe ? 'Obstrucción de Accesos' : 'Obstrução de Acessos',
           text: isSantaFe ? '¿Pasillos, salidas de emergencia y duchas están despejados?' : 'Passagens, saídas de emergência e chuveiros estão desobstruídos?'
         },
         {
-          id: '2.3',
+          id: '2_3',
           perigo: isSantaFe ? 'Iluminación / Ventilación' : 'Iluminação / Ventilação',
           text: isSantaFe ? '¿Niveles de luz y renovación de aire adecuados?' : 'Níveis de luz e renovação de ar (exaustão/ventilação) adequados?'
         },
         {
-          id: '2.4',
+          id: '2_4',
           perigo: isSantaFe ? 'Animales Ponzoñosos' : 'Animais Peçonhentos',
           text: isSantaFe ? '¿Inspección visual realizada y área libre de insectos/serpientes?' : 'Inspeção visual realizada e área livre de insetos/serpientes?'
         },
         {
-          id: '2.5',
+          id: '2_5',
           perigo: isSantaFe ? 'Ruido y Vibración' : 'Ruído e Vibração',
           text: isSantaFe ? '¿Niveles de ruido permanente identificados y controlados?' : 'Níveis de ruído permanente identificados e controlados?'
         },
         {
-          id: '2.6',
+          id: '2_6',
           perigo: isSantaFe ? 'Radiación Ionizante' : 'Radiação Ionizante',
           text: isSantaFe ? '¿Fuentes radiográficas o industriales identificadas y aisladas?' : 'Fontes radiográficas ou industriais identificadas e isoladas?'
         }
@@ -772,16 +773,27 @@ const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
     }
   ];
 
+  const energySources = [
+    { id: 'ele', label: 'Elétrica', icon: Zap, color: 'text-yellow-600', bg: 'bg-yellow-50', border: 'border-yellow-200' },
+    { id: 'mec', label: 'Mecânica', icon: Settings, color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' },
+    { id: 'hid', label: 'Hidráulica', icon: Droplets, color: 'text-cyan-600', bg: 'bg-cyan-50', border: 'border-cyan-200' },
+    { id: 'pne', label: 'Pneumática', icon: Wind, color: 'text-sky-600', bg: 'bg-sky-50', border: 'border-sky-200' },
+    { id: 'qui', label: 'Química', icon: FlaskConical, color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
+    { id: 'ter', label: 'Térmica', icon: ThermometerSun, color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200' },
+  ];
+
   const verificacaoWatch = watch('verificacaoOperador') || {};
 
   React.useEffect(() => {
     sections.forEach(section => {
-      const allAnswered = section.questions.every(q => verificacaoWatch[q.id]);
-      if (allAnswered && openSections.includes(section.id)) {
-        setOpenSections(prev => prev.filter(id => id !== section.id));
+      const isNowComplete = section.questions.every(q => !!verificacaoWatch[q.id]);
+      if (isNowComplete && openSections.includes(section.id)) {
+        setTimeout(() => {
+          setOpenSections(prev => prev.filter(id => id !== section.id));
+        }, 400);
       }
     });
-  }, [verificacaoWatch]);
+  }, [verificacaoWatch, openSections]);
 
   return (
     <div className="space-y-6 pt-6">
@@ -800,7 +812,7 @@ const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
             className="space-y-4"
           >
             {sections.map((section) => {
-              const answeredCount = section.questions.filter(q => verificacaoWatch[q.id]).length;
+              const answeredCount = section.questions.filter(q => !!verificacaoWatch[q.id]).length;
               const isComplete = answeredCount === section.questions.length;
 
               return (
@@ -817,16 +829,20 @@ const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
                       )}>
                         {section.title}
                       </h3>
-                      {isComplete ? (
-                        <Badge variant="outline" className="ml-auto bg-green-50 text-green-600 border-green-200 gap-1.5 h-6 px-2 rounded-full font-bold shrink-0">
-                          <CheckCircle2 className="h-3.5 w-3.5" />
-                          {isSantaFe ? 'COMPLETO' : 'COMPLETO'}
-                        </Badge>
-                      ) : (
-                        <span className="ml-auto text-[10px] font-bold text-gray-400 shrink-0">
+                      <div className="ml-auto flex items-center gap-3">
+                        <span className={cn(
+                          "text-[10px] font-bold shrink-0",
+                          isComplete ? "text-green-600" : "text-gray-400"
+                        )}>
                           {answeredCount}/{section.questions.length}
                         </span>
-                      )}
+                        {isComplete && (
+                          <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200 gap-1.5 h-6 px-2 rounded-full font-bold shrink-0">
+                            <CheckCircle2 className="h-3.5 w-3.5" />
+                            {isSantaFe ? 'COMPLETO' : 'COMPLETO'}
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="px-6 pb-6 pt-2 border-t border-gray-50">
@@ -834,7 +850,7 @@ const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
                       {section.questions.map((q) => (
                         <div key={q.id} className="space-y-3">
                           <div className="flex items-start gap-2">
-                            <span className="text-sm font-bold text-[#5C8D3C] min-w-[24px]">{q.id}</span>
+                            <span className="text-sm font-bold text-[#5C8D3C] min-w-[24px]">{q.id.replace('_', '.')}</span>
                             <div className="space-y-1">
                               <p className="text-sm font-bold text-black uppercase leading-tight">
                                 {q.perigo}
@@ -845,7 +861,7 @@ const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
                             </div>
                           </div>
                           
-                          <div className="pl-8">
+                          <div className="flex items-center gap-8 pl-8">
                             <FormField
                               control={control}
                               name={`verificacaoOperador.${q.id}`}
@@ -853,25 +869,25 @@ const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
                                 <RadioGroup
                                   onValueChange={field.onChange}
                                   value={field.value}
-                                  className="flex items-center gap-6"
+                                  className="flex items-center gap-8"
                                 >
-                                  <div className="flex items-center space-x-2">
+                                  <div className="flex items-center space-x-2.5">
                                     <RadioGroupItem 
                                       value="sim" 
                                       id={`${q.id}-sim`} 
-                                      className="border-gray-300 text-[#5C8D3C] focus:ring-[#5C8D3C]" 
+                                      className="h-5 w-5 border-gray-300 text-[#5C8D3C] focus:ring-[#5C8D3C]" 
                                     />
-                                    <Label htmlFor={`${q.id}-sim`} className="text-sm text-gray-600 font-medium cursor-pointer">
+                                    <Label htmlFor={`${q.id}-sim`} className="text-sm text-gray-700 font-semibold cursor-pointer">
                                       {isSantaFe ? 'Si' : 'Sim'}
                                     </Label>
                                   </div>
-                                  <div className="flex items-center space-x-2">
+                                  <div className="flex items-center space-x-2.5">
                                     <RadioGroupItem 
                                       value="na" 
                                       id={`${q.id}-na`} 
-                                      className="border-gray-300 text-[#5C8D3C] focus:ring-[#5C8D3C]" 
+                                      className="h-5 w-5 border-gray-300 text-[#5C8D3C] focus:ring-[#5C8D3C]" 
                                     />
-                                    <Label htmlFor={`${q.id}-na`} className="text-sm text-gray-600 font-medium cursor-pointer">
+                                    <Label htmlFor={`${q.id}-na`} className="text-sm text-gray-700 font-semibold cursor-pointer">
                                       N/A
                                     </Label>
                                   </div>
@@ -881,12 +897,112 @@ const OperatorVerificationSection = ({ isSantaFe }: { isSantaFe: boolean }) => {
                           </div>
                         </div>
                       ))}
+
+                      {section.id === 'section-1' && (
+                        <div className="mt-4 italic text-[10px] text-gray-400">
+                          {isSantaFe ? '* Verifique todos los items antes de proceder' : '* Verifique todos os itens antes de prosseguir'}
+                        </div>
+                      )}
                     </div>
                   </AccordionContent>
                 </AccordionItem>
               );
             })}
           </Accordion>
+
+          {/* Bloqueio de Energias - Fora do Accordion */}
+          <div className="mt-12 pt-8 border-t border-gray-100 space-y-8 animate-in fade-in duration-500">
+            <div className="space-y-4">
+              <div className="flex items-center px-4 py-3 bg-red-50/50 border border-red-100 rounded-lg">
+                <p className="text-sm font-black text-red-900 uppercase tracking-tight flex-1">
+                  {isSantaFe ? '¿Requiere bloqueio de fuentes de energía?' : 'Requer bloqueio de fontes de energia?'}
+                </p>
+                <FormField
+                  control={control}
+                  name="verificacaoOperador.requerBloqueio"
+                  render={({ field }) => (
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      className="flex items-center gap-6"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="sim" id="bloqueio-sim" className="h-5 w-5" />
+                        <Label htmlFor="bloqueio-sim" className="text-sm font-bold">{isSantaFe ? 'Si' : 'Sim'}</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="nao" id="bloqueio-nao" className="h-5 w-5" />
+                        <Label htmlFor="bloqueio-nao" className="text-sm font-bold">No</Label>
+                      </div>
+                    </RadioGroup>
+                  )}
+                />
+              </div>
+
+              {watch('verificacaoOperador.requerBloqueio') === 'sim' && (
+                <div className="space-y-6 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="space-y-4">
+                    <Label className="text-xs font-black uppercase text-gray-500 tracking-wider">
+                      {isSantaFe ? 'Fuentes de energía para bloquear' : 'Fontes de energia para bloquear'}
+                    </Label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {energySources.map((source) => {
+                        const selectedSources = watch('verificacaoOperador.fontesBloqueio') || [];
+                        const isSelected = selectedSources.includes(source.id);
+                        
+                        return (
+                          <button
+                            key={source.id}
+                            type="button"
+                            onClick={() => {
+                              const current = [...selectedSources];
+                              const index = current.indexOf(source.id);
+                              if (index > -1) current.splice(index, 1);
+                              else current.push(source.id);
+                              setValue('verificacaoOperador.fontesBloqueio', current, { shouldDirty: true });
+                            }}
+                            className={cn(
+                              "flex items-center gap-3 p-3 rounded-lg border transition-all duration-200 text-left",
+                              isSelected 
+                                ? cn(source.bg, source.border, "shadow-sm scale-[1.02]") 
+                                : "bg-white border-gray-200 hover:border-gray-300 grayscale opacity-60 hover:opacity-100 hover:grayscale-0"
+                            )}
+                          >
+                            <div className={cn("p-2 rounded-md bg-white border border-inherit", source.color)}>
+                              <source.icon className="h-5 w-5" />
+                            </div>
+                            <span className={cn("text-xs font-bold leading-tight", isSelected ? source.color : "text-gray-600")}>
+                              {source.label}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {(watch('verificacaoOperador.fontesBloqueio')?.length > 0) && (
+                    <div className="space-y-3 animate-in fade-in slide-in-from-top-2">
+                      <Label className="text-xs font-black uppercase text-gray-500 tracking-wider flex items-center gap-2">
+                        <HardHat className="h-4 w-4" />
+                        {isSantaFe ? 'Número de la matriz de bloqueio' : 'Número da matriz de bloqueio'}
+                      </Label>
+                      <FormField
+                        control={control}
+                        name="verificacaoOperador.matrizBloqueio"
+                        render={({ field }) => (
+                          <Input 
+                            {...field}
+                            placeholder={isSantaFe ? "Ingrese el número de la matriz..." : "Digite o número da matriz..."}
+                            className="h-12 border-2 border-gray-100 focus:border-[#5C8D3C] bg-white rounded-lg font-bold text-lg"
+                          />
+                        )}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {watch('alturaSubcategorias')?.includes('andaimes') && (
